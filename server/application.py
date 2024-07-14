@@ -11,19 +11,20 @@ import requests
 #
 ##
 ### Configuration
-QDRANT_HOST = os.environ['QDRANT_HOST']
-QDRANT_PORT = os.environ['QDRANT_PORT']
-qdrant_client = QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT)
+qdrant_client = QdrantClient(
+    url="https://91789c54-40aa-434f-8e79-a17e35a05f89.us-east4-0.gcp.cloud.qdrant.io:6333", 
+    api_key="MN21Bg12kbk0bHi_LGRbyVOAPoTuf61QmQhxYVL8pZbdyD-BEzSPKQ",
+)
 
 app = FastAPI()
 
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=["http://localhost:3000", "https://salmon-moss-08b81541e.5.azurestaticapps.net"],  # Allows access from your React app
-#     allow_credentials=True,
-#     allow_methods=["*"],  # Allows all methods
-#     allow_headers=["*"],  # Allows all headers
-# )
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "https://salmon-moss-08b81541e.5.azurestaticapps.net"],  # Allows access from your React app
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
 
 #
 ##
@@ -120,3 +121,7 @@ async def retrieve_and_generate_response(input: TextInput):
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+if __name__ == '__main__':
+    import uvicorn
+    uvicorn.run(app, host='0.0.0.0', port=8000)    
